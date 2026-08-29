@@ -73,6 +73,8 @@ export const api = {
     request<BalanceSheetResponse>(`/reports/balance-sheet?asOf=${asOf}&comparison=${comparison}`),
   getTrialBalance: (asOf: string, comparison: 'off' | 'prev' = 'off') =>
     request<TrialBalanceResponse>(`/reports/trial-balance?asOf=${asOf}&comparison=${comparison}`),
+  closePeriod: (from: string, to: string) =>
+    request<import('@akuntask/shared').ClosingResult>('/journals/closing', { method: 'POST', body: JSON.stringify({ from, to }) }),
 };
 
 export { ApiError };

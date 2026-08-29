@@ -68,6 +68,8 @@ export default function Reports(): JSX.Element {
       {error && <div className="mb-4 p-3 rounded bg-red-50 text-red-700 text-sm">{error}</div>}
 
       {tab === 'pl' && <ProfitLossView from={from} to={to} comparison={comparison} onError={setError} />}
+      {tab === 'bs' && <ClosePeriodButton from={`${asOf.slice(0, 8)}01`} to={asOf} onError={setError} />}
+
       {tab === 'bs' && <BalanceSheetView asOf={asOf} comparison={comparison} onError={setError} />}
       {tab === 'tb' && <TrialBalanceView asOf={asOf} comparison={comparison} onError={setError} />}
 
@@ -83,6 +85,40 @@ function TabButton({ active, onClick, children }: { active: boolean; onClick: ()
     <button onClick={onClick} className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px ${active ? 'border-brand-600 text-brand-700' : 'border-transparent text-slate-500 hover:text-slate-700'}`}>
       {children}
     </button>
+  );
+}
+
+function ClosePeriodButton({ from, to, onError }: { from: string; to: string; onError: (s: string | null) => void }): JSX.Element {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  async function close(): Promise<void> {
+    if (!window.confirm(`Tutup periode ${from} s/d ${to}?\n\nSistem akan membuat 2 jurnal penutup dan saldo Revenue/Beban periode ini menjadi nol. Aksi ini tidak bisa dibatalkan dari UI.`)) return;
+    setLoading(true);
+    setMessage(null);
+    onError(null);
+    try {
+      const result = await api.closePeriod(from, to);
+      setMessage(`Periode ditutup. Laba bersih Rp ${fmt(result.netProfit)}. 2 jurnal penutup dibuat.`);
+      window.location.reload();
+    } catch (err) {
+      onError(err instanceof Error ? err.message : 'Closing gagal');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="mb-4 flex items-center justify-between gap-3 p-3 rounded-lg border border-yellow-200 bg-yellow-50">
+      <div className="text-sm text-yellow-800">
+        <div className="font-medium">Tutup periode akuntansi</div>
+        <div className="text-xs">Buat jurnal penutup untuk {from} s/d {to}. Setelah closing, Neraca akan balance.</div>
+        {message && <div className="mt-1 text-green-700">{message}</div>}
+      </div>
+      <button type="button" onClick={close} disabled={loading} className="shrink-0 bg-yellow-700 hover:bg-yellow-800 text-white text-sm font-medium px-3 py-2 rounded disabled:opacity-50">
+        {loading ? 'Menutup…' : 'Tutup Periode'}
+      </button>
+    </div>
   );
 }
 
