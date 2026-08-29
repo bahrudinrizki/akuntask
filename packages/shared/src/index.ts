@@ -53,3 +53,66 @@ export interface ApiError {
   timestamp: string;
   path: string;
 }
+
+export type CoaType = 'ASSET' | 'LIABILITY' | 'EQUITY' | 'REVENUE' | 'EXPENSE';
+
+export interface CoaDto {
+  id: string;
+  code: string;
+  name: string;
+  type: CoaType;
+  parentId: string | null;
+  level: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCoaRequest {
+  code: string;
+  name: string;
+  type: CoaType;
+  parentId?: string;
+  level?: number;
+}
+
+export interface UpdateCoaRequest {
+  name?: string;
+  isActive?: boolean;
+  parentId?: string | null;
+}
+
+export interface JournalLineInput {
+  coaId: string;
+  debit?: number;
+  credit?: number;
+  description?: string;
+}
+
+export interface JournalLineDto {
+  id: string;
+  coaId: string;
+  coaCode: string;
+  coaName: string;
+  debit: number;
+  credit: number;
+  description: string | null;
+}
+
+export interface JournalDto {
+  id: string;
+  referenceNo: string;
+  date: string;
+  description: string;
+  status: string;
+  totalDebit: number;
+  totalCredit: number;
+  createdAt: string;
+  lines: JournalLineDto[];
+}
+
+export interface CreateJournalRequest {
+  date: string;
+  description: string;
+  lines: JournalLineInput[];
+}
