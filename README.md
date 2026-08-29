@@ -2,12 +2,17 @@
 
 Aplikasi Akuntansi & Manajemen Bisnis Online — implementasi PRD v1.0.
 
+🌐 **Demo publik (GitHub Pages):** https://bahrudinrizki.github.io/akuntask/
+
+> Demo publik hanya menampilkan UI frontend. Backend belum di-deploy ke server publik, jadi login/register tidak akan bekerja. Klik **"Coba Demo (offline)"** untuk eksplorasi UI tanpa data.
+
 ## Stack (per PRD §6.2)
 
 - **Backend:** NestJS 10 + Prisma 5 + SQLite (dev) / PostgreSQL 15 (prod)
 - **Frontend:** React 18 + Vite + TypeScript + Tailwind CSS
 - **Monorepo:** pnpm workspaces
 - **Cache/Queue/Storage:** Redis, RabbitMQ, MinIO — ditambah saat Phase 4+ (PRD §6.2)
+- **CI/CD:** GitHub Actions (build web → GitHub Pages)
 
 > **Override catatan:** `AGENTS.md` mendeklarasikan stack PHP+MySQL+Nginx. Setup ini meng-override mengikuti PRD §6.2 (NestJS+Postgres+React) sesuai keputusan product owner. Aturan workflow AGENTS (granular commit, validasi sebelum push) tetap dipakai.
 
@@ -26,6 +31,22 @@ packages/
 - Node.js >= 20
 - pnpm >= 9 (`npm i -g pnpm`)
 - Untuk prod: PostgreSQL 15+ (dev pakai SQLite, zero install)
+
+## GitHub Pages (Demo Publik)
+
+Setiap push ke `main` akan otomatis build + deploy frontend ke GitHub Pages via `.github/workflows/pages.yml`.
+
+**Live URL:** https://bahrudinrizki.github.io/akuntask/
+
+**Limitasi:** GitHub Pages hanya static hosting. Backend tidak bisa dijalankan di Pages.
+- Halaman login akan menampilkan error "Backend tidak dapat dihubungi"
+- Klik **"Coba Demo (offline)"** untuk masuk ke UI tanpa data backend
+- Untuk fitur penuh (auth, COA, jurnal, laporan), jalankan lokal atau deploy backend ke Railway/Render/Fly.io
+
+**Cara enable GitHub Pages di repo Anda:**
+1. Buka https://github.com/bahrudinrizki/akuntask/settings/pages
+2. Source: "GitHub Actions"
+3. Save — workflow akan trigger otomatis
 
 ## Setup Lokal
 
