@@ -8,6 +8,7 @@ import JournalForm from './pages/JournalForm';
 import JournalList from './pages/JournalList';
 import Ledger from './pages/Ledger';
 import Reports from './pages/Reports';
+import NotFound from './pages/NotFound';
 
 function Protected({ children }: { children: JSX.Element }): JSX.Element {
   const { token } = useAuth();
@@ -68,6 +69,7 @@ export default function App(): JSX.Element {
           </Protected>
         }
       />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
