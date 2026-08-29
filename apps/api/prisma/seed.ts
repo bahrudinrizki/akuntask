@@ -12,7 +12,6 @@ interface CoaSeed {
 }
 
 const PSAK_COA: CoaSeed[] = [
-  // ASSET (1xxxx)
   { code: '1000', name: 'ASET', type: 'ASSET', level: 1 },
   { code: '1100', name: 'Aset Lancar', type: 'ASSET', parent: '1000', level: 2 },
   { code: '1101', name: 'Kas', type: 'ASSET', parent: '1100', level: 3 },
@@ -25,8 +24,6 @@ const PSAK_COA: CoaSeed[] = [
   { code: '1301', name: 'Peralatan', type: 'ASSET', parent: '1300', level: 3 },
   { code: '1302', name: 'Akumulasi Penyusutan Peralatan', type: 'ASSET', parent: '1300', level: 3 },
   { code: '1400', name: 'Aset Tidak Lancar Lainnya', type: 'ASSET', parent: '1000', level: 2 },
-
-  // LIABILITY (2xxxx)
   { code: '2000', name: 'LIABILITAS', type: 'LIABILITY', level: 1 },
   { code: '2100', name: 'Liabilitas Jangka Pendek', type: 'LIABILITY', parent: '2000', level: 2 },
   { code: '2101', name: 'Hutang Usaha', type: 'LIABILITY', parent: '2100', level: 3 },
@@ -34,24 +31,18 @@ const PSAK_COA: CoaSeed[] = [
   { code: '2103', name: 'Hutang Gaji', type: 'LIABILITY', parent: '2100', level: 3 },
   { code: '2200', name: 'Liabilitas Jangka Panjang', type: 'LIABILITY', parent: '2000', level: 2 },
   { code: '2201', name: 'Hutang Bank', type: 'LIABILITY', parent: '2200', level: 3 },
-
-  // EQUITY (3xxxx)
   { code: '3000', name: 'EKUITAS', type: 'EQUITY', level: 1 },
   { code: '3100', name: 'Modal Disetor', type: 'EQUITY', parent: '3000', level: 2 },
   { code: '3101', name: 'Modal Pemilik', type: 'EQUITY', parent: '3100', level: 3 },
   { code: '3200', name: 'Laba Ditahan', type: 'EQUITY', parent: '3000', level: 2 },
   { code: '3201', name: 'Laba Tahun Berjalan', type: 'EQUITY', parent: '3200', level: 3 },
   { code: '3300', name: 'Prive', type: 'EQUITY', parent: '3000', level: 2 },
-
-  // REVENUE (4xxxx)
   { code: '4000', name: 'PENDAPATAN', type: 'REVENUE', level: 1 },
   { code: '4100', name: 'Pendapatan Usaha', type: 'REVENUE', parent: '4000', level: 2 },
   { code: '4101', name: 'Penjualan', type: 'REVENUE', parent: '4100', level: 3 },
   { code: '4102', name: 'Pendapatan Jasa', type: 'REVENUE', parent: '4100', level: 3 },
   { code: '4200', name: 'Pendapatan Lain-lain', type: 'REVENUE', parent: '4000', level: 2 },
   { code: '4201', name: 'Pendapatan Bunga', type: 'REVENUE', parent: '4200', level: 3 },
-
-  // EXPENSE (5xxxx)
   { code: '5000', name: 'BEBAN', type: 'EXPENSE', level: 1 },
   { code: '5100', name: 'Beban Pokok Penjualan', type: 'EXPENSE', parent: '5000', level: 2 },
   { code: '5101', name: 'HPP', type: 'EXPENSE', parent: '5100', level: 3 },
@@ -66,7 +57,28 @@ const PSAK_COA: CoaSeed[] = [
   { code: '5400', name: 'Beban Lain-lain', type: 'EXPENSE', parent: '5000', level: 2 },
 ];
 
-async function seedCompany(id: string, name: string, email: string): Promise<string> {
+interface SeedJournal {
+  ref: string;
+  date: string;
+  description: string;
+  lines: Array<{ code: string; debit?: number; credit?: number }>;
+}
+
+const SEED_JOURNALS: SeedJournal[] = [
+  { ref: 'JR-202607-0001', date: '2026-07-01', description: 'Modal awal pemilik', lines: [{ code: '1101', debit: 100_000_000 }, { code: '3101', credit: 100_000_000 }] },
+  { ref: 'JR-202608-0001', date: '2026-08-02', description: 'Penjualan tunai', lines: [{ code: '1101', debit: 5_000_000 }, { code: '4101', credit: 5_000_000 }] },
+  { ref: 'JR-202608-0002', date: '2026-08-05', description: 'Penjualan kredit', lines: [{ code: '1103', debit: 3_500_000 }, { code: '4101', credit: 3_500_000 }] },
+  { ref: 'JR-202608-0003', date: '2026-08-10', description: 'Beban gaji bulanan', lines: [{ code: '5201', debit: 2_500_000 }, { code: '1101', credit: 2_500_000 }] },
+  { ref: 'JR-202608-0004', date: '2026-08-12', description: 'Beban sewa kantor', lines: [{ code: '5202', debit: 1_500_000 }, { code: '1101', credit: 1_500_000 }] },
+  { ref: 'JR-202608-0005', date: '2026-08-15', description: 'Penjualan tunai pertengahan bulan', lines: [{ code: '1101', debit: 500_000 }, { code: '4101', credit: 500_000 }] },
+  { ref: 'JR-202608-0006', date: '2026-08-18', description: 'Beban listrik & air', lines: [{ code: '5203', debit: 750_000 }, { code: '1101', credit: 750_000 }] },
+  { ref: 'JR-202608-0007', date: '2026-08-20', description: 'Pembelian barang dagang secara kredit', lines: [{ code: '1201', debit: 150_000 }, { code: '2101', credit: 150_000 }] },
+  { ref: 'JR-202608-0008', date: '2026-08-25', description: 'Pelunasan piutang dari pelanggan', lines: [{ code: '1101', debit: 2_000_000 }, { code: '1103', credit: 2_000_000 }] },
+  { ref: 'JR-202608-0009', date: '2026-08-29', description: 'Penjualan tunai akhir bulan', lines: [{ code: '1101', debit: 100_000 }, { code: '4101', credit: 100_000 }] },
+  { ref: 'JR-202608-0010', date: '2026-08-30', description: 'Beban alat tulis kantor', lines: [{ code: '5205', debit: 200_000 }, { code: '1101', credit: 200_000 }] },
+];
+
+async function seedCompany(id: string, name: string, email: string, ownerName: string): Promise<void> {
   const passwordHash = await bcrypt.hash('password123', 10);
   const adminPerms = JSON.stringify(['*']);
   const accountantPerms = JSON.stringify(['ACC:*', 'RPT:READ', 'SAL:READ', 'PUR:READ']);
@@ -86,8 +98,8 @@ async function seedCompany(id: string, name: string, email: string): Promise<str
 
   const user = await prisma.user.upsert({
     where: { email },
-    update: { passwordHash },
-    create: { companyId: company.id, email, name: 'Budi Owner', passwordHash },
+    update: { passwordHash, name: ownerName },
+    create: { companyId: company.id, email, name: ownerName, passwordHash },
   });
   await prisma.userRole.upsert({
     where: { userId_roleId: { userId: user.id, roleId: roles[0].id } },
@@ -106,12 +118,54 @@ async function seedCompany(id: string, name: string, email: string): Promise<str
     codeToId.set(c.code, created.id);
   }
 
-  return company.id;
+  for (const journal of SEED_JOURNALS) {
+    const existing = await prisma.journal.findUnique({ where: { companyId_referenceNo: { companyId: company.id, referenceNo: journal.ref } } });
+    if (existing) continue;
+    const totalDebit = journal.lines.reduce((s, l) => s + (l.debit ?? 0), 0);
+    const totalCredit = journal.lines.reduce((s, l) => s + (l.credit ?? 0), 0);
+    await prisma.journal.create({
+      data: {
+        companyId: company.id,
+        referenceNo: journal.ref,
+        date: new Date(journal.date),
+        description: journal.description,
+        status: 'POSTED',
+        totalDebit,
+        totalCredit,
+        createdById: user.id,
+        lines: { create: journal.lines.map((l) => ({ coaId: codeToId.get(l.code)!, debit: l.debit ?? 0, credit: l.credit ?? 0 })) },
+      },
+    });
+  }
+
+  const closingRef = 'JR-202608-CLOSE';
+  const existingClosing = await prisma.journal.findUnique({ where: { companyId_referenceNo: { companyId: company.id, referenceNo: closingRef } } });
+  if (!existingClosing) {
+    const revenueSums = await prisma.journalLine.groupBy({ by: ['coaId'], _sum: { credit: true, debit: true }, where: { coa: { companyId: company.id, type: 'REVENUE' } } });
+    const expenseSums = await prisma.journalLine.groupBy({ by: ['coaId'], _sum: { debit: true, credit: true }, where: { coa: { companyId: company.id, type: 'EXPENSE' } } });
+    const totalRevenue = revenueSums.reduce((s, x) => s + ((x._sum.credit ?? 0) - (x._sum.debit ?? 0)), 0);
+    const totalExpense = expenseSums.reduce((s, x) => s + ((x._sum.debit ?? 0) - (x._sum.credit ?? 0)), 0);
+    const net = Math.round((totalRevenue - totalExpense) * 100) / 100;
+    if (Math.abs(net) > 0) {
+      const lines: Array<{ coaId: string; debit: number; credit: number }> = net > 0
+        ? [{ coaId: codeToId.get('3101')!, debit: net, credit: 0 }, { coaId: codeToId.get('3201')!, debit: 0, credit: net }]
+        : [{ coaId: codeToId.get('3201')!, debit: -net, credit: 0 }, { coaId: codeToId.get('3101')!, debit: 0, credit: -net }];
+      const absNet = Math.abs(net);
+      await prisma.journal.create({
+        data: {
+          companyId: company.id, referenceNo: closingRef, date: new Date('2026-08-31'),
+          description: `Alokasi laba/rugi periode ke Laba Tahun Berjalan: ${net.toLocaleString('id-ID')}`,
+          status: 'POSTED', totalDebit: absNet, totalCredit: absNet, createdById: user.id,
+          lines: { create: lines.map((l) => ({ coaId: l.coaId, debit: l.debit, credit: l.credit })) },
+        },
+      });
+    }
+  }
 }
 
 async function main(): Promise<void> {
-  await seedCompany('seed-company-1', 'PT Contoh Makmur', 'owner@contoh.co.id');
-  console.log('Seed completed: companies, users, roles, and PSAK COA template');
+  await seedCompany('seed-company-1', 'PT Contoh Makmur', 'owner@contoh.co.id', 'Budi Owner');
+  console.log('Seed completed: companies, users, roles, PSAK COA, 11 journals + closing entry');
 }
 
 main()
