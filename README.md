@@ -56,7 +56,7 @@ Akses:
 |-------|----------|------|
 | owner@contoh.co.id | password123 | OWNER |
 
-## Endpoint yang Tersedia (Phase 0.5)
+## Endpoint yang Tersedia (Phase 0.5 + 1)
 
 | Method | Path | Auth | Keterangan |
 |--------|------|------|------------|
@@ -68,6 +68,12 @@ Akses:
 | GET | /api/v1/companies | JWT | List companies |
 | GET | /api/v1/companies/me | JWT | Company milik user |
 | POST | /api/v1/companies | JWT | Buat company baru |
+| GET | /api/v1/coa | JWT | List Chart of Accounts (PSAK template) |
+| POST | /api/v1/coa | JWT | Buat akun baru |
+| PATCH | /api/v1/coa/:id | JWT | Edit akun (name/isActive/parent) |
+| GET | /api/v1/journals | JWT | List jurnal dengan lines |
+| POST | /api/v1/journals | JWT | Buat jurnal (validasi debit = kredit) |
+| GET | /api/v1/ledger/:coaId?from=YYYY-MM-DD&to=YYYY-MM-DD | JWT | Buku besar per akun dengan saldo berjalan |
 
 ## Roadmap (PRD §12)
 
