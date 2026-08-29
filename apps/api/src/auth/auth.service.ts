@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
 import { PRISMA_CLIENT } from '../prisma/prisma.module';
+import { DEFAULT_PSAK_COA } from '../coa/default-coa';
 import { Inject } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import type { LoginResponse, RegisterRequest, AuthUser } from '@akuntask/shared';
@@ -43,6 +44,21 @@ export class AuthService {
         data: { name: 'OWNER', description: 'Company owner', permissions: defaultPerms },
       }));
       await tx.userRole.create({ data: { userId: user.id, roleId: role.id } });
+      const codeToId = new Map<string, string>();
+      for (const coa of DEFAULT_PSAK_COA) {
+        const parentId = coa.parent ? codeToId.get(coa.parent) : undefined;
+        const created = await tx.chartOfAccount.create({
+          data: {
+            companyId: company.id,
+            code: coa.code,
+            name: coa.name,
+            type: coa.type,
+            parentId,
+            level: coa.level,
+          },
+        });
+        codeToId.set(coa.code, created.id);
+      }
       return { user, company, roles: [role.name] };
     });
 

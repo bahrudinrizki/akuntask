@@ -1,5 +1,5 @@
 import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
 import { AuthService } from './auth.service';
 import type { LoginResponse, RegisterRequest } from '@akuntask/shared';
 
@@ -10,10 +10,10 @@ class LoginDto {
 
 class RegisterDto {
   @IsString() companyName!: string;
-  @IsString() companyNpwp?: string;
-  @IsString() companyAddress?: string;
-  @IsString() companyPhone?: string;
-  @IsString() companyEmail?: string;
+  @IsOptional() @IsString() companyNpwp?: string;
+  @IsOptional() @IsString() companyAddress?: string;
+  @IsOptional() @IsString() companyPhone?: string;
+  @IsOptional() @IsEmail() companyEmail?: string;
   @IsEmail() userEmail!: string;
   @IsString() @MinLength(8) userPassword!: string;
   @IsString() userName!: string;
