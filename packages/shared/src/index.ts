@@ -24,7 +24,10 @@ export interface CompanyDto {
   address?: string | null;
   phone?: string | null;
   email?: string | null;
+  industry?: string | null;
   isActive: boolean;
+  onboardingStep: number;
+  onboardingCompleted: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -35,6 +38,31 @@ export interface CreateCompanyRequest {
   address?: string;
   phone?: string;
   email?: string;
+  industry?: string;
+}
+
+export type CoaTemplateKey = 'PSAK_FULL' | 'RETAIL' | 'SERVICE';
+
+export interface OnboardingProfileRequest {
+  name?: string;
+  npwp?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  industry?: string;
+}
+
+export interface OnboardingTemplateRequest {
+  template: CoaTemplateKey;
+}
+
+export interface OnboardingWarehouseRequest {
+  name: string;
+  location?: string;
+}
+
+export interface CompleteOnboardingResponse {
+  company: CompanyDto;
 }
 
 export interface RegisterRequest {
