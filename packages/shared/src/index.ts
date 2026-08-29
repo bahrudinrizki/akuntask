@@ -116,3 +116,24 @@ export interface CreateJournalRequest {
   description: string;
   lines: JournalLineInput[];
 }
+
+export interface LedgerEntry {
+  journalId: string;
+  date: string;
+  referenceNo: string;
+  description: string;
+  debit: number;
+  credit: number;
+  balance: number;
+}
+
+export interface LedgerResponse {
+  coa: CoaDto;
+  from: string;
+  to: string;
+  opening: number;
+  totalDebit: number;
+  totalCredit: number;
+  closing: number;
+  entries: LedgerEntry[];
+}
