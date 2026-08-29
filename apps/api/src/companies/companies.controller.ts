@@ -12,6 +12,7 @@ class CreateCompanyDto implements CreateCompanyRequest {
   @IsOptional() @IsString() address?: string;
   @IsOptional() @IsString() phone?: string;
   @IsOptional() @IsEmail() email?: string;
+  @IsOptional() @IsString() industry?: string;
 }
 
 function toDto(c: {
@@ -21,7 +22,10 @@ function toDto(c: {
   address: string | null;
   phone: string | null;
   email: string | null;
+  industry: string | null;
   isActive: boolean;
+  onboardingStep: number;
+  onboardingCompleted: boolean;
   createdAt: Date;
   updatedAt: Date;
 }): CompanyDto {
@@ -32,7 +36,10 @@ function toDto(c: {
     address: c.address,
     phone: c.phone,
     email: c.email,
+    industry: c.industry,
     isActive: c.isActive,
+    onboardingStep: c.onboardingStep,
+    onboardingCompleted: c.onboardingCompleted,
     createdAt: c.createdAt.toISOString(),
     updatedAt: c.updatedAt.toISOString(),
   };

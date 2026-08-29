@@ -9,6 +9,7 @@ import { JournalsModule } from './journals/journals.module';
 import { LedgerModule } from './ledger/ledger.module';
 import { ReportsModule } from './reports/reports.module';
 import { ClosingModule } from './closing/closing.module';
+import { OnboardingModule } from './onboarding/onboarding.module';
 import { HealthController } from './health.controller';
 
 @Module({
@@ -23,6 +24,7 @@ import { HealthController } from './health.controller';
     LedgerModule,
     ReportsModule,
     ClosingModule,
+    OnboardingModule,
   ],
   controllers: [HealthController],
 })
