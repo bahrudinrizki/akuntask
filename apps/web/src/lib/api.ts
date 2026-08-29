@@ -10,6 +10,9 @@ import type {
   JournalDto,
   CreateJournalRequest,
   LedgerResponse,
+  ProfitLossResponse,
+  BalanceSheetResponse,
+  TrialBalanceResponse,
 } from '@akuntask/shared';
 
 const API_BASE = (import.meta.env.VITE_API_URL ?? '') + '/api/v1';
@@ -52,6 +55,13 @@ export const api = {
 
   getLedger: (coaId: string, from: string, to: string) =>
     request<LedgerResponse>(`/ledger/${coaId}?from=${from}&to=${to}`),
+
+  getProfitLoss: (from: string, to: string, comparison: 'off' | 'prev' = 'off') =>
+    request<ProfitLossResponse>(`/reports/profit-loss?from=${from}&to=${to}&comparison=${comparison}`),
+  getBalanceSheet: (asOf: string, comparison: 'off' | 'prev' = 'off') =>
+    request<BalanceSheetResponse>(`/reports/balance-sheet?asOf=${asOf}&comparison=${comparison}`),
+  getTrialBalance: (asOf: string, comparison: 'off' | 'prev' = 'off') =>
+    request<TrialBalanceResponse>(`/reports/trial-balance?asOf=${asOf}&comparison=${comparison}`),
 };
 
 export { ApiError };
