@@ -9,6 +9,7 @@ import type {
   CreateCoaRequest,
   JournalDto,
   CreateJournalRequest,
+  LedgerResponse,
 } from '@akuntask/shared';
 
 const API_BASE = (import.meta.env.VITE_API_URL ?? '') + '/api/v1';
@@ -48,6 +49,9 @@ export const api = {
 
   listJournals: () => request<JournalDto[]>('/journals'),
   createJournal: (data: CreateJournalRequest) => request<JournalDto>('/journals', { method: 'POST', body: JSON.stringify(data) }),
+
+  getLedger: (coaId: string, from: string, to: string) =>
+    request<LedgerResponse>(`/ledger/${coaId}?from=${from}&to=${to}`),
 };
 
 export { ApiError };
