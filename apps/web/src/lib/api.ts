@@ -73,6 +73,11 @@ export const api = {
     request<BalanceSheetResponse>(`/reports/balance-sheet?asOf=${asOf}&comparison=${comparison}`),
   getTrialBalance: (asOf: string, comparison: 'off' | 'prev' = 'off') =>
     request<TrialBalanceResponse>(`/reports/trial-balance?asOf=${asOf}&comparison=${comparison}`),
+  onboarding: () => request<CompanyDto>('/onboarding'),
+  onboardingProfile: (data: import('@akuntask/shared').OnboardingProfileRequest) => request<CompanyDto>('/onboarding/profile', { method: 'POST', body: JSON.stringify(data) }),
+  onboardingTemplate: (template: import('@akuntask/shared').CoaTemplateKey) => request<CompanyDto>('/onboarding/template', { method: 'POST', body: JSON.stringify({ template }) }),
+  onboardingWarehouse: (name: string, location?: string) => request<CompanyDto>('/onboarding/warehouse', { method: 'POST', body: JSON.stringify({ name, location }) }),
+  completeOnboarding: () => request<import('@akuntask/shared').CompleteOnboardingResponse>('/onboarding/complete', { method: 'POST' }),
   closePeriod: (from: string, to: string) =>
     request<import('@akuntask/shared').ClosingResult>('/journals/closing', { method: 'POST', body: JSON.stringify({ from, to }) }),
 };

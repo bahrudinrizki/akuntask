@@ -29,7 +29,8 @@ export default function Login(): JSX.Element {
     try {
       const data = await api.login({ email, password });
       setSession(data);
-      navigate('/');
+      const company = await api.onboarding();
+      navigate(company.onboardingCompleted ? '/' : '/onboarding');
     } catch (err) {
       if (err instanceof ApiUnavailableError) {
         setBackendDown(true);

@@ -23,7 +23,7 @@ export default function Register(): JSX.Element {
         user: { email, password, name },
       });
       setSession(data);
-      navigate('/');
+      navigate('/onboarding');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Register failed');
     } finally {

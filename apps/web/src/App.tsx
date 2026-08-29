@@ -8,6 +8,7 @@ import JournalForm from './pages/JournalForm';
 import JournalList from './pages/JournalList';
 import Ledger from './pages/Ledger';
 import Reports from './pages/Reports';
+import Onboarding from './pages/Onboarding';
 import NotFound from './pages/NotFound';
 
 function Protected({ children }: { children: JSX.Element }): JSX.Element {
@@ -26,6 +27,14 @@ export default function App(): JSX.Element {
         element={
           <Protected>
             <Dashboard />
+          </Protected>
+        }
+      />
+      <Route
+        path="/onboarding"
+        element={
+          <Protected>
+            <Onboarding />
           </Protected>
         }
       />
