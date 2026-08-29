@@ -28,6 +28,7 @@ export default function Dashboard(): JSX.Element {
         <nav className="flex items-center gap-4 text-sm">
           <Link to="/coa" className="text-slate-600 hover:text-brand-600">COA</Link>
           <Link to="/journals" className="text-slate-600 hover:text-brand-600">Jurnal</Link>
+          <Link to="/ledger" className="text-slate-600 hover:text-brand-600">Buku Besar</Link>
           <span className="text-slate-400">|</span>
           <span className="text-slate-600">{user?.email}</span>
           <button onClick={() => { logout(); navigate('/login'); }} className="text-brand-600 hover:underline">Keluar</button>

@@ -50,6 +50,9 @@ export default function CoaList(): JSX.Element {
           <td className="py-2 px-3 text-sm">
             {c.isActive ? <span className="text-green-600">Aktif</span> : <span className="text-slate-400">Non-aktif</span>}
           </td>
+          <td className="py-2 px-3 text-sm text-right">
+            <Link to={`/ledger?coaId=${c.id}`} className="text-brand-600 hover:underline text-xs">Buku Besar</Link>
+          </td>
         </tr>,
         ...renderTree(c.id, level + 1),
       ]);
@@ -77,6 +80,7 @@ export default function CoaList(): JSX.Element {
               <th className="text-left text-xs font-semibold text-slate-600 py-2 px-3">Tipe</th>
               <th className="text-left text-xs font-semibold text-slate-600 py-2 px-3">Level</th>
               <th className="text-left text-xs font-semibold text-slate-600 py-2 px-3">Status</th>
+              <th className="text-right text-xs font-semibold text-slate-600 py-2 px-3">Aksi</th>
             </tr>
           </thead>
           <tbody>{renderTree(null, 0)}</tbody>
