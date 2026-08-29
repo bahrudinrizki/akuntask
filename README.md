@@ -74,6 +74,9 @@ Akses:
 | GET | /api/v1/journals | JWT | List jurnal dengan lines |
 | POST | /api/v1/journals | JWT | Buat jurnal (validasi debit = kredit) |
 | GET | /api/v1/ledger/:coaId?from=YYYY-MM-DD&to=YYYY-MM-DD | JWT | Buku besar per akun dengan saldo berjalan |
+| GET | /api/v1/reports/profit-loss?from=YYYY-MM-DD&to=YYYY-MM-DD&comparison=off\|prev | JWT | Laba Rugi (RPT-001) |
+| GET | /api/v1/reports/balance-sheet?asOf=YYYY-MM-DD&comparison=off\|prev | JWT | Neraca (RPT-002) |
+| GET | /api/v1/reports/trial-balance?asOf=YYYY-MM-DD&comparison=off\|prev | JWT | Neraca Saldo (RPT-006) |
 
 ## Roadmap (PRD §12)
 
