@@ -137,3 +137,72 @@ export interface LedgerResponse {
   closing: number;
   entries: LedgerEntry[];
 }
+
+export interface ReportLine {
+  accountId: string;
+  code: string;
+  name: string;
+  amount: number;
+  previousAmount?: number;
+}
+
+export interface ReportSection {
+  category: string;
+  parentId?: string;
+  lines: ReportLine[];
+  total: number;
+  previousTotal?: number;
+}
+
+export interface ProfitLossResponse {
+  from: string;
+  to: string;
+  comparison: 'off' | 'prev';
+  revenue: ReportSection[];
+  expense: ReportSection[];
+  totalRevenue: number;
+  totalExpense: number;
+  netProfit: number;
+  previousTotalRevenue?: number;
+  previousTotalExpense?: number;
+  previousNetProfit?: number;
+}
+
+export interface BalanceSheetResponse {
+  asOf: string;
+  comparison: 'off' | 'prev';
+  assets: ReportSection[];
+  liabilities: ReportSection[];
+  equity: ReportSection[];
+  assetsTotal: number;
+  liabilitiesTotal: number;
+  equityTotal: number;
+  totalLiabilitiesEquity: number;
+  previousAssetsTotal?: number;
+  previousLiabilitiesTotal?: number;
+  previousEquityTotal?: number;
+  balanced: boolean;
+}
+
+export interface TrialBalanceLine {
+  accountId: string;
+  code: string;
+  name: string;
+  type: CoaType;
+  debit: number;
+  credit: number;
+  previousDebit?: number;
+  previousCredit?: number;
+}
+
+export interface TrialBalanceResponse {
+  asOf: string;
+  comparison: 'off' | 'prev';
+  adjusted: boolean;
+  lines: TrialBalanceLine[];
+  totalDebit: number;
+  totalCredit: number;
+  previousTotalDebit?: number;
+  previousTotalCredit?: number;
+  balanced: boolean;
+}
