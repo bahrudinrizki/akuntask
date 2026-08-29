@@ -7,6 +7,7 @@ import CoaList from './pages/CoaList';
 import JournalForm from './pages/JournalForm';
 import JournalList from './pages/JournalList';
 import Ledger from './pages/Ledger';
+import Reports from './pages/Reports';
 
 function Protected({ children }: { children: JSX.Element }): JSX.Element {
   const { token } = useAuth();
@@ -56,6 +57,14 @@ export default function App(): JSX.Element {
         element={
           <Protected>
             <Ledger />
+          </Protected>
+        }
+      />
+      <Route
+        path="/reports"
+        element={
+          <Protected>
+            <Reports />
           </Protected>
         }
       />
