@@ -21,9 +21,74 @@ model Company {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  users User[]
+  users      User[]
+  coa        ChartOfAccount[]
+  journals   Journal[]
 
   @@map("companies")
+}
+
+// COA types per PSAK: ASSET, LIABILITY, EQUITY, REVENUE, EXPENSE
+// Multi-level: level 1 (header), level 2 (sub-header), level 3+ (detail)
+model ChartOfAccount {
+  id        String   @id @default(cuid())
+  companyId String   @map("company_id")
+  code      String
+  name      String
+  type      String
+  parentId  String?  @map("parent_id")
+  level     Int      @default(1)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  company      Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  parent       ChartOfAccount?   @relation("CoaTree", fields: [parentId], references: [id])
+  children     ChartOfAccount[]  @relation("CoaTree")
+  journalLines JournalLine[]
+
+  @@unique([companyId, code])
+  @@index([companyId, type])
+  @@index([parentId])
+  @@map("chart_of_accounts")
+}
+
+model Journal {
+  id          String   @id @default(cuid())
+  companyId   String   @map("company_id")
+  referenceNo String   @map("reference_no")
+  date        DateTime
+  description String
+  status      String   @default("POSTED")
+  totalDebit  Float    @map("total_debit")
+  totalCredit Float    @map("total_credit")
+  createdById String?  @map("created_by_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  company   Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdBy User?        @relation("JournalCreator", fields: [createdById], references: [id])
+  lines     JournalLine[]
+
+  @@unique([companyId, referenceNo])
+  @@index([companyId, date])
+  @@map("journals")
+}
+
+model JournalLine {
+  id          String  @id @default(cuid())
+  journalId   String  @map("journal_id")
+  coaId       String  @map("coa_id")
+  debit       Float   @default(0)
+  credit      Float   @default(0)
+  description String?
+
+  journal Journal        @relation(fields: [journalId], references: [id], onDelete: Cascade)
+  coa     ChartOfAccount @relation(fields: [coaId], references: [id])
+
+  @@index([journalId])
+  @@index([coaId])
+  @@map("journal_lines")
 }
 
 model User {
@@ -37,8 +102,9 @@ model User {
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
 
-  company Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  roles   UserRole[]
+  company    Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  roles      UserRole[]
+  journals   Journal[]  @relation("JournalCreator")
 
   @@index([companyId])
   @@map("users")
