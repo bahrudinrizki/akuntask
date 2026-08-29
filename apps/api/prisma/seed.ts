@@ -138,29 +138,8 @@ async function seedCompany(id: string, name: string, email: string, ownerName: s
     });
   }
 
-  const closingRef = 'JR-202608-CLOSE';
-  const existingClosing = await prisma.journal.findUnique({ where: { companyId_referenceNo: { companyId: company.id, referenceNo: closingRef } } });
-  if (!existingClosing) {
-    const revenueSums = await prisma.journalLine.groupBy({ by: ['coaId'], _sum: { credit: true, debit: true }, where: { coa: { companyId: company.id, type: 'REVENUE' } } });
-    const expenseSums = await prisma.journalLine.groupBy({ by: ['coaId'], _sum: { debit: true, credit: true }, where: { coa: { companyId: company.id, type: 'EXPENSE' } } });
-    const totalRevenue = revenueSums.reduce((s, x) => s + ((x._sum.credit ?? 0) - (x._sum.debit ?? 0)), 0);
-    const totalExpense = expenseSums.reduce((s, x) => s + ((x._sum.debit ?? 0) - (x._sum.credit ?? 0)), 0);
-    const net = Math.round((totalRevenue - totalExpense) * 100) / 100;
-    if (Math.abs(net) > 0) {
-      const lines: Array<{ coaId: string; debit: number; credit: number }> = net > 0
-        ? [{ coaId: codeToId.get('3101')!, debit: net, credit: 0 }, { coaId: codeToId.get('3201')!, debit: 0, credit: net }]
-        : [{ coaId: codeToId.get('3201')!, debit: -net, credit: 0 }, { coaId: codeToId.get('3101')!, debit: 0, credit: -net }];
-      const absNet = Math.abs(net);
-      await prisma.journal.create({
-        data: {
-          companyId: company.id, referenceNo: closingRef, date: new Date('2026-08-31'),
-          description: `Alokasi laba/rugi periode ke Laba Tahun Berjalan: ${net.toLocaleString('id-ID')}`,
-          status: 'POSTED', totalDebit: absNet, totalCredit: absNet, createdById: user.id,
-          lines: { create: lines.map((l) => ({ coaId: l.coaId, debit: l.debit, credit: l.credit })) },
-        },
-      });
-    }
-  }
+  // Closing period is invoked at runtime via POST /journals/closing, not hardcoded here.
+  // Seed only inserts the operational journals — closing journals are produced by the API.
 }
 
 async function main(): Promise<void> {
