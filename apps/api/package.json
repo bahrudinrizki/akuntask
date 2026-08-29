@@ -12,6 +12,7 @@
     "db:generate": "prisma generate",
     "db:migrate": "dotenv -e ../../.env -- prisma migrate dev",
     "db:seed": "dotenv -e ../../.env -- ts-node prisma/seed.ts",
+    "test:e2e": "node test/e2e/full-flow.mjs",
     "prisma": "dotenv -e ../../.env -- prisma"
   },
   "dependencies": {
