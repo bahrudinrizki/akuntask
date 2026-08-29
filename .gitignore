@@ -17,3 +17,5 @@ prisma/*.db
 prisma/*.db-journal
 .cache/
 .pnpm-store/
+*:Zone.Identifier
+apps/api/prisma/prisma/
