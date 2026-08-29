@@ -8,6 +8,7 @@ import { CoaModule } from './coa/coa.module';
 import { JournalsModule } from './journals/journals.module';
 import { LedgerModule } from './ledger/ledger.module';
 import { ReportsModule } from './reports/reports.module';
+import { ClosingModule } from './closing/closing.module';
 import { HealthController } from './health.controller';
 
 @Module({
@@ -21,6 +22,7 @@ import { HealthController } from './health.controller';
     JournalsModule,
     LedgerModule,
     ReportsModule,
+    ClosingModule,
   ],
   controllers: [HealthController],
 })
