@@ -6,6 +6,7 @@ import { CompaniesModule } from './companies/companies.module';
 import { UsersModule } from './users/users.module';
 import { CoaModule } from './coa/coa.module';
 import { JournalsModule } from './journals/journals.module';
+import { LedgerModule } from './ledger/ledger.module';
 import { HealthController } from './health.controller';
 
 @Module({
@@ -17,6 +18,7 @@ import { HealthController } from './health.controller';
     UsersModule,
     CoaModule,
     JournalsModule,
+    LedgerModule,
   ],
   controllers: [HealthController],
 })
