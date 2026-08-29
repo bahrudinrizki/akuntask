@@ -32,9 +32,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build API (typecheck only, no need for runtime)
-        run: pnpm --filter @akuntask/api run build
-
       - name: Build Web with GitHub Pages base path
         run: pnpm --filter @akuntask/web run build
         env:
