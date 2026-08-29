@@ -23,16 +23,27 @@ class ApiError extends Error {
   }
 }
 
+export class ApiUnavailableError extends Error {
+  constructor() {
+    super('Backend tidak dapat dihubungi. Untuk demo publik (GitHub Pages), backend belum di-deploy. Jalankan lokal untuk fitur penuh.');
+  }
+}
+
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const token = localStorage.getItem('akuntask_token');
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...init,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...init.headers,
-    },
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      ...init,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...init.headers,
+      },
+    });
+  } catch (networkErr) {
+    throw new ApiUnavailableError();
+  }
   if (!res.ok) {
     const body = await res.json().catch(() => ({ message: res.statusText }));
     throw new ApiError(res.status, body.message ?? res.statusText);
