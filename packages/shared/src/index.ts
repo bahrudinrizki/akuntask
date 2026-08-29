@@ -206,3 +206,12 @@ export interface TrialBalanceResponse {
   previousTotalCredit?: number;
   balanced: boolean;
 }
+
+export interface ClosingResult {
+  closingJournals: JournalDto[];
+  totalRevenue: number;
+  totalExpense: number;
+  netProfit: number;
+  periodFrom: string;
+  periodTo: string;
+}
