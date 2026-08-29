@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
+const repoName = 'akuntask';
+
+export default defineConfig(({ mode }) => ({
+  base: mode === 'production' && process.env.GITHUB_PAGES ? `/${repoName}/` : '/',
   plugins: [react()],
   server: {
     port: Number(process.env.WEB_PORT ?? 5173),
@@ -12,4 +15,7 @@ export default defineConfig({
       },
     },
   },
-});
+  preview: {
+    port: Number(process.env.WEB_PORT ?? 5173),
+  },
+}));
