@@ -94,6 +94,7 @@ Akses:
 | PATCH | /api/v1/coa/:id | JWT | Edit akun (name/isActive/parent) |
 | GET | /api/v1/journals | JWT | List jurnal dengan lines |
 | POST | /api/v1/journals | JWT | Buat jurnal (validasi debit = kredit) |
+| POST | /api/v1/journals/closing | JWT | ACC-008: auto closing jurnal Revenue/Expense → Laba Tahun Berjalan → Modal Pemilik |
 | GET | /api/v1/ledger/:coaId?from=YYYY-MM-DD&to=YYYY-MM-DD | JWT | Buku besar per akun dengan saldo berjalan |
 | GET | /api/v1/reports/profit-loss?from=YYYY-MM-DD&to=YYYY-MM-DD&comparison=off\|prev | JWT | Laba Rugi (RPT-001) |
 | GET | /api/v1/reports/balance-sheet?asOf=YYYY-MM-DD&comparison=off\|prev | JWT | Neraca (RPT-002) |
